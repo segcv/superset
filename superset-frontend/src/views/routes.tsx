@@ -94,6 +94,10 @@ const SavedQueryList = lazy(
       /* webpackChunkName: "SavedQueryList" */ 'src/views/CRUD/data/savedquery/SavedQueryList'
     ),
 );
+const AIModule = lazy(
+  () =>
+    import('src/views/CRUD/ai/AI'),
+);
 
 type Routes = {
   path: string;
@@ -168,6 +172,11 @@ export const routes: Routes = [
     props: {
       isReportEnabled: true,
     },
+  },
+  /* AI */
+  {
+    path: '/ai/train/',
+    Component: AIModule,
   },
 ];
 

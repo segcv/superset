@@ -166,6 +166,9 @@ class SupersetAppInitializer:
             DashboardModelView,
             DashboardModelViewAsync,
         )
+        from superset.views.ai import (
+            AIModelView,
+        )
         from superset.views.database.views import (
             CsvToDatabaseView,
             DatabaseView,
@@ -272,6 +275,15 @@ class SupersetAppInitializer:
             menu_cond=lambda: feature_flag_manager.is_feature_enabled(
                 "ROW_LEVEL_SECURITY"
             ),
+        )
+        # AI Menu
+        appbuilder.add_view(
+            AIModelView,
+            "AI",
+            label=__("AI"),
+            icon="fa-dashboard",
+            category="",
+            category_icon="",
         )
 
         #
