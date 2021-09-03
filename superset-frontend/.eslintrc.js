@@ -138,7 +138,7 @@ module.exports = {
         'react/require-default-props': 0,
         'react/sort-comp': 0, // TODO: re-enable in separate PR
         'react/static-property-placement': 0, // re-enable up for discussion
-        'prettier/prettier': 'error',
+        'prettier/prettier': 'off',
       },
       settings: {
         'import/resolver': {
