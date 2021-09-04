@@ -16,22 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getChartControlPanelRegistry } from '@superset-ui/core';
-import MainPreset from '../visualizations/presets/MainPreset';
-import setupPluginsExtra from './setupPluginsExtra';
-
-import Separator from '../explore/controlPanels/Separator';
-import TimeTable from '../explore/controlPanels/TimeTable';
-import KMeansZhou from '../explore/controlPanels/KMeansZhou';
-
-export default function setupPlugins() {
-  new MainPreset().register();
-
-  // TODO: Remove these shims once the control panel configs are moved into the plugin package.
-  getChartControlPanelRegistry()
-    .registerValue('separator', Separator)
-    .registerValue('time_table', TimeTable)
-    .registerValue('k_means_zhou', KMeansZhou);
-
-  setupPluginsExtra();
-}
+ import { t, ChartMetadata, ChartPlugin } from '@superset-ui/core';
+ import transformProps from './transformProps';
+ import thumbnail from './images/thumbnail.png';
+ 
+ const metadata = new ChartMetadata({
+   category: t('Table'),
+   name: t('K Means 肘方法'),
+   description: t(
+     'Compare multiple time series charts (as sparklines) and related metrics quickly.',
+   ),
+   tags: [
+     t('AI-Eval')
+   ],
+   thumbnail,
+   useLegacyApi: true,
+ });
+ 
+ export default class KMeansZhouChartPlugin extends ChartPlugin {
+   constructor() {
+     super({
+       metadata,
+       transformProps,
+       loadChart: () => import('./KMeansZhou.jsx'),
+     });
+   }
+ }
+ 
