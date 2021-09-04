@@ -878,6 +878,54 @@ class KMeansZhouMethodViz(BaseViz):
     #     params = pickle.dumps(classifier)
     #     print(params)
 
+# KMeans 预测
+class KMeansValViz(BaseViz):
+    viz_type = "k_means_val"
+    verbose_name = _("K Means 预测")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+    is_timeseries = False
+
+    def query_obj(self) -> QueryObjectDict:
+        d = super().query_obj()
+        fd = self.form_data
+
+        if not fd.get("columns"):
+            raise QueryObjectValidationError(_("Pick at least one columns"))
+
+        return d
+
+    def get_data(self, df: pd.DataFrame) -> VizData:
+        if df.empty:
+            return None
+
+        fd = self.form_data
+        columns = None
+        values: Union[List[str], str] = self.metric_labels
+        his = self.train(df)
+        return dict(
+            columns = columns,
+            df = df.to_dict("records"),
+            his = his
+        )
+
+    # 手肘法训练模型，并入ai_model_params库
+    def train(self, df: pd.DataFrame):
+        from scipy.spatial.distance import cdist
+        from sklearn import preprocessing
+        import pickle
+        from superset.ai_solver.KMeansSolver import KMeansSolver
+        solver = KMeansSolver()
+
+        min_max_scaler = preprocessing.MinMaxScaler()
+        x = min_max_scaler.fit_transform(df)
+
+        idx, euclidean = solver.train_zhou(x)
+
+        return {
+            'idx': idx,
+            'euclidean': euclidean
+        }
+
 
 class PivotTableViz(BaseViz):
 

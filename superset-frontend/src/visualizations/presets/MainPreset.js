@@ -83,6 +83,7 @@ import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/p
 import FilterBoxChartPlugin from '../FilterBox/FilterBoxChartPlugin';
 import TimeTableChartPlugin from '../TimeTable/TimeTableChartPlugin';
 import KMeansZhouChartPlugin from '../KMeansZhou/KMeansZhouChartPlugin';
+import KMeansValChartPlugin from '../KMeansVal/KMeansValChartPlugin';
 
 export default class MainPreset extends Preset {
   constructor() {
@@ -168,6 +169,7 @@ export default class MainPreset extends Preset {
         new TimeGrainFilterPlugin().configure({ key: 'filter_timegrain' }),
         new EchartsTreeChartPlugin().configure({ key: 'tree_chart' }),
         new KMeansZhouChartPlugin().configure({ key: 'k_means_zhou' }),
+        new KMeansValChartPlugin().configure({ key: 'k_means_val' }),
         ...experimentalplugins,
       ],
     });

@@ -23,6 +23,7 @@ import setupPluginsExtra from './setupPluginsExtra';
 import Separator from '../explore/controlPanels/Separator';
 import TimeTable from '../explore/controlPanels/TimeTable';
 import KMeansZhou from '../explore/controlPanels/KMeansZhou';
+import KMeansVal from '../explore/controlPanels/KMeansVal';
 
 export default function setupPlugins() {
   new MainPreset().register();
@@ -31,7 +32,8 @@ export default function setupPlugins() {
   getChartControlPanelRegistry()
     .registerValue('separator', Separator)
     .registerValue('time_table', TimeTable)
-    .registerValue('k_means_zhou', KMeansZhou);
+    .registerValue('k_means_zhou', KMeansZhou)
+    .registerValue('k_means_val', KMeansVal);
 
   setupPluginsExtra();
 }
