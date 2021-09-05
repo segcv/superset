@@ -62,3 +62,12 @@ class AIModelParamsDAO(BaseDAO):
         db.session.add(model)
         if commit:
             db.session.commit()
+
+    
+    @staticmethod
+    def list() -> List[AIModelParams]:
+        from sqlalchemy.sql import text
+        rows = db.session.query(AIModelParams).from_statement(text('select id,name,slice_id,checkpoint FROM ai_model_params ORDER BY update_time')).all()
+        return rows
+
+    

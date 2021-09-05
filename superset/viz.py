@@ -910,11 +910,12 @@ class KMeansValViz(BaseViz):
         x = min_max_scaler.fit_transform(df)
 
         # train
-        _, model = solver.train(x)
-        checkpoint = pickle.dumps(model)
+        from superset.ai.ai_model_param_dao import AIModelParamsDAO
+        rows = AIModelParamsDAO.list()
+        row = rows[0]
 
         # val
-        idx, clusters = solver.test(x, checkpoint=checkpoint)
+        idx, clusters = solver.test(x, checkpoint=row.checkpoint)
         return {
             'idx': idx,
             'clusters': clusters
