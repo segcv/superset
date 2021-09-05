@@ -45,8 +45,6 @@
      clusters
    }) {
  
-    console.log('idx', idx)
-    console.log('clusters', clusters)
     const categories = idx.map(r=> `clust ${r}`);
     const seriesData = clusters.map((row, rowNum)=>{
         return {
