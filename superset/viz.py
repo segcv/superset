@@ -845,6 +845,12 @@ class KMeansZhouMethodViz(BaseViz):
 
     # 手肘法训练模型，并入ai_model_params库
     def train(self, df: pd.DataFrame):
+        modelConfig = {
+            'max_num_clusters': int(self.form_data['max_num_clusters']),
+            'num_clusters': int(self.form_data['num_clusters']),
+            'checkpoint_name': self.form_data['checkpoint_name'],
+        }
+
         from scipy.spatial.distance import cdist
         from sklearn import preprocessing
         import pickle
@@ -854,29 +860,13 @@ class KMeansZhouMethodViz(BaseViz):
         min_max_scaler = preprocessing.MinMaxScaler()
         x = min_max_scaler.fit_transform(df)
 
-        idx, euclidean = solver.train_zhou(x)
+        idx, euclidean = solver.train_zhou(x, config=modelConfig)
 
         return {
             'idx': idx,
             'euclidean': euclidean
         }
 
-    # 训练模型，并入ai_model_params库
-    # def train2(self, df: pd.DataFrame):
-    #     from sklearn.cluster import KMeans
-    #     from sklearn import preprocessing
-    #     import pickle
-
-    #     gt = df['gt']
-    #     x = df.drop('gt', axis=1)
-
-    #     min_max_scaler = preprocessing.MinMaxScaler()
-    #     x = min_max_scaler.fit_transform(x)
-
-    #     classifier = KMeans(n_clusters=3)
-    #     classifier.fit(x)
-    #     params = pickle.dumps(classifier)
-    #     print(params)
 
 # KMeans 预测
 class KMeansValViz(BaseViz):
