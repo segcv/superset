@@ -28,3 +28,5 @@ src/dashboard/deprecated/*
 src/temp/*
 **/node_modules
 *.d.ts
+src/visualizations/KMeansVal/*
+src/visualizations/KMeansZhou/*

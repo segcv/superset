@@ -18,7 +18,7 @@
  */
  export default function transformProps(chartProps) {
     const { height, width, queriesData } = chartProps;
-    const { idx, euclidean } = queriesData[0].data.his;
+    const { idx, clusters } = queriesData[0].data.ai_ret;
 
     // const { columnCollection = [], groupby, metrics, url } = formData;
     // const { records, columns } = queriesData[0].data;
@@ -52,18 +52,18 @@
     //     c.timeLag = parseInt(c.timeLag, 10);
     //   }
     // });
-    console.log(chartProps)
-    console.log('#1', queriesData[0])
-    console.log('#2', queriesData[0].data)
-    console.log('#3', queriesData[0].data.his)
-    console.log('#4', idx)
-    console.log('#5', euclidean)
+    // console.log(chartProps)
+    // console.log('#1', queriesData[0])
+    // console.log('#2', queriesData[0].data)
+    // console.log('#3', queriesData[0].data.his)
+    // console.log('#4', idx)
+    // console.log('#5', euclidean)
   
     return {
       height,
       width,
       idx,
-      euclidean
+      clusters
     };
   }
   

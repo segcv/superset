@@ -26,14 +26,14 @@
      height: PropTypes.number,
      width: PropTypes.number,
      idx: PropTypes.array,
-     euclidean: PropTypes.array
+     clusters: PropTypes.array
  };
  const defaultProps = {
      className: '',
      height: 200,
      width: 200,
      idx: [],
-     euclidean: [],
+     clusters: [],
  };
  
  
@@ -42,31 +42,69 @@
      height,
      width,
      idx,
-     euclidean
+     clusters
    }) {
  
+    console.log('idx', idx)
+    console.log('clusters', clusters)
+    const categories = idx.map(r=> `clust ${r}`);
+    const seriesData = clusters.map((row, rowNum)=>{
+        return {
+            name: `cluster ${rowNum}`,
+            type: 'scatter',
+            emphasis: {
+                focus: 'series'
+            },
+            data: row
+        }
+    });
+
      const echartOptions = {
-         xAxis: {
-             name: '簇数',
-             type: 'category',
-             data: idx
-         },
-         yAxis: {
-             name: '欧氏距离',
-             type: 'value',
-             scale: true
-         },
-         series: [{
-             data: euclidean,
-             type: 'line'
-         }],
-         tooltip: {
-             trigger: 'axis',
-             formatter: (data)=>{
-                 console.log(data)
-                 return `num_cluster: ${data[0].value}`
-             }
-         },
+        grid: {
+            left: '3%',
+            right: '7%',
+            bottom: '7%',
+            containLabel: true
+        },
+        tooltip: {
+            // trigger: 'axis',
+            showDelay: 0,
+            formatter: function (params) {
+                return params.seriesName;
+            }
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {},
+                brush: {
+                    type: ['rect', 'polygon', 'clear']
+                }
+            }
+        },
+        legend: {
+            data: categories,
+            left: 'center',
+            bottom: 10
+        },
+        xAxis: [
+            {
+                type: 'value',
+                scale: true,
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                scale: true,
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        series: seriesData
      };
  
  

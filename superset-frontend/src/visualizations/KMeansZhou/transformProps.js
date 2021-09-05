@@ -52,12 +52,12 @@
     //     c.timeLag = parseInt(c.timeLag, 10);
     //   }
     // });
-    console.log(chartProps)
-    console.log('#1', queriesData[0])
-    console.log('#2', queriesData[0].data)
-    console.log('#3', queriesData[0].data.his)
-    console.log('#4', idx)
-    console.log('#5', euclidean)
+    // console.log(chartProps)
+    // console.log('#1', queriesData[0])
+    // console.log('#2', queriesData[0].data)
+    // console.log('#3', queriesData[0].data.his)
+    // console.log('#4', idx)
+    // console.log('#5', euclidean)
   
     return {
       height,

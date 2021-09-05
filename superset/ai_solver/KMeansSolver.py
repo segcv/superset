@@ -35,5 +35,23 @@ class KMeansSolver():
 
         return loss, classfier
 
-    def test(self, x, y=None, config={}):
-        pass
+    def test(self, x, y=None, checkpoint=None, config={}):
+        num_clusters = get_map_val(config, 'num_clusters', 3)
+
+        if checkpoint is None:
+            return None
+
+        # real work
+        cls:KMeans = pickle.loads(checkpoint)
+        cls.predict(x)
+        
+        y_pred = cls.labels_
+        index = np.arange(0, num_clusters)
+        clusters = []
+        for i in index:
+            idx = np.where(y_pred == (i))
+            cluster = x[idx]
+            info = np.array([cluster[:, 0], cluster[:, 1]]).transpose()
+            clusters.append(info)
+
+        return index, clusters

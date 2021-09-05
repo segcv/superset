@@ -492,4 +492,38 @@ export const controls = {
       colorScheme: state.form_data.color_scheme,
     }),
   },
+  /* AI板块专用的ControlPanel组件 */
+  // max_num_clusters: {
+  //   type: 'ModelParameter',
+  //   freeForm: true,
+  //   label: t('Max Num Clusters'),
+  //   validators: [legacyValidateInteger],
+  //   choices: formatSelectOptions(SERIES_LIMITS),
+  //   description: t(
+  //     '最大的簇数！',
+  //   ),
+  // },
+  // num_clusters: {
+  //   type: 'SelectControl',
+  //   freeForm: true,
+  //   label: t('Num Clusters'),
+  //   validators: [legacyValidateInteger],
+  //   choices: formatSelectOptions(SERIES_LIMITS),
+  //   description: t(
+  //     '设定该簇数，用于存储模型！',
+  //   ),
+  // },
+  limit2: {
+    type: 'SelectControl',
+    freeForm: true,
+    label: t('Series limit'),
+    validators: [legacyValidateInteger],
+    choices: formatSelectOptions(SERIES_LIMITS),
+    description: t(
+      'Limits the number of time series that get displayed. A sub query ' +
+        '(or an extra phase where sub queries are not supported) is applied to limit ' +
+        'the number of time series that get fetched and displayed. This feature is useful ' +
+        'when grouping by high cardinality dimension(s).',
+    ),
+  },
 };
