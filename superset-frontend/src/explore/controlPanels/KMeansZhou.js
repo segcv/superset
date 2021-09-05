@@ -9,7 +9,6 @@ export default {
       controlSetRows: [
         ['columns'],
         ['adhoc_filters'],
-        ['limit']
       ],
     },
     {
@@ -55,10 +54,5 @@ export default {
         ],
       ],
     },
-  ],
-  controlOverrides: {
-    groupby: {
-      multiple: false,
-    },
-  },
+  ]
 };

@@ -9,13 +9,25 @@ export default {
       controlSetRows: [
         ['columns'],
         ['adhoc_filters'],
-        ['limit']
       ],
     },
-  ],
-  controlOverrides: {
-    groupby: {
-      multiple: false,
+    {
+      label: t('Model Options'),
+      expanded: true,
+      controlSetRows: [
+        [{
+          name: 'checkpoint_info',
+          config: {
+            type: 'SelectControl',
+            freeForm: true,
+            label: 'checkpoints',
+            validators: [],
+            choices: [],
+            description: t('请选择合适的checkpoint!'),
+            default: 10
+          },
+        }],
+      ],
     },
-  },
+  ]
 };
