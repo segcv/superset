@@ -60,6 +60,7 @@ from superset import (
     sql_lab,
     viz,
 )
+from superset.dao.ai_model_param_dao import AIModelParamsDAO
 from superset.charts.dao import ChartDAO
 from superset.connectors.base.models import BaseDatasource
 from superset.connectors.connector_registry import ConnectorRegistry
@@ -98,6 +99,7 @@ from superset.models.datasource_access_request import DatasourceAccessRequest
 from superset.models.slice import Slice
 from superset.models.sql_lab import LimitingFactor, Query, TabState
 from superset.models.user_attributes import UserAttribute
+from superset.models.ai_model_params import AIModelParams
 from superset.queries.dao import QueryDAO
 from superset.security.analytics_db_safety import check_sqlalchemy_uri
 from superset.sql_parse import CtasMethod, ParsedQuery, Table
@@ -1015,6 +1017,36 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
         if dash and slc not in dash.slices:
             dash.slices.append(slc)
             db.session.commit()
+
+        # AI模型存储
+        try:
+            viz_obj = get_viz(
+                datasource_type=datasource_type,
+                datasource_id=datasource_id,
+                form_data=form_data,
+                force=False,
+            )
+            payload = viz_obj.get_payload()
+            # print(payload)
+            df = pd.DataFrame(payload['data']['df'])
+            checkpoint_name = form_data['checkpoint_name']
+            slice_id = form_data['slice_id'] if ('slice_id' in form_data)  else -1
+
+            from superset.ai_solver.KMeansSolver import KMeansSolver
+            from sklearn import preprocessing
+            import pickle
+            solver = KMeansSolver()
+            
+            min_max_scaler = preprocessing.MinMaxScaler()
+            x = min_max_scaler.fit_transform(df)
+
+            loss, classfier = solver.train(x)
+            modelParams = pickle.dumps(classfier)
+
+            row = AIModelParams(name=checkpoint_name, slice_id=slice_id, checkpoint=modelParams)
+            AIModelParamsDAO.save(row)
+        except SupersetException as ex:
+            return json_error_response(utils.error_msg_from_exception(ex))
 
         response = {
             "can_add": slice_add_perm,

@@ -22,4 +22,5 @@ from . import (
     schedules,
     sql_lab,
     user_attributes,
+    ai_model_params
 )
