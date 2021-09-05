@@ -60,7 +60,7 @@ from superset import (
     sql_lab,
     viz,
 )
-from superset.dao.ai_model_param_dao import AIModelParamsDAO
+from superset.ai.ai_model_param_dao import AIModelParamsDAO
 from superset.charts.dao import ChartDAO
 from superset.connectors.base.models import BaseDatasource
 from superset.connectors.connector_registry import ConnectorRegistry
