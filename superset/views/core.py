@@ -1019,34 +1019,36 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
             db.session.commit()
 
         # AI模型存储
-        try:
-            viz_obj = get_viz(
-                datasource_type=datasource_type,
-                datasource_id=datasource_id,
-                form_data=form_data,
-                force=False,
-            )
-            payload = viz_obj.get_payload()
-            # print(payload)
-            df = pd.DataFrame(payload['data']['df'])
-            checkpoint_name = form_data['checkpoint_name']
-            slice_id = form_data['slice_id'] if ('slice_id' in form_data)  else -1
+        viz_type = form_data['viz_type']
+        if viz_type in ['k_means_zhou']:
+            try:
+                viz_obj = get_viz(
+                    datasource_type=datasource_type,
+                    datasource_id=datasource_id,
+                    form_data=form_data,
+                    force=False,
+                )
+                payload = viz_obj.get_payload()
+                # print(payload)
+                df = pd.DataFrame(payload['data']['df'])
+                checkpoint_name = form_data['checkpoint_name']
+                slice_id = form_data['slice_id'] if ('slice_id' in form_data)  else -1
 
-            from superset.ai_solver.KMeansSolver import KMeansSolver
-            from sklearn import preprocessing
-            import pickle
-            solver = KMeansSolver()
-            
-            min_max_scaler = preprocessing.MinMaxScaler()
-            x = min_max_scaler.fit_transform(df)
+                from superset.ai_solver.KMeansSolver import KMeansSolver
+                from sklearn import preprocessing
+                import pickle
+                solver = KMeansSolver()
+                
+                min_max_scaler = preprocessing.MinMaxScaler()
+                x = min_max_scaler.fit_transform(df)
 
-            loss, classfier = solver.train(x)
-            modelParams = pickle.dumps(classfier)
+                loss, classfier = solver.train(x)
+                modelParams = pickle.dumps(classfier)
 
-            row = AIModelParams(name=checkpoint_name, slice_id=slice_id, checkpoint=modelParams)
-            AIModelParamsDAO.save(row)
-        except SupersetException as ex:
-            return json_error_response(utils.error_msg_from_exception(ex))
+                row = AIModelParams(name=checkpoint_name, slice_id=slice_id, checkpoint=modelParams)
+                AIModelParamsDAO.save(row)
+            except SupersetException as ex:
+                return json_error_response(utils.error_msg_from_exception(ex))
 
         response = {
             "can_add": slice_add_perm,
