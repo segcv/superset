@@ -85,4 +85,4 @@ class AIRestApi(BaseSupersetModelRestApi):
     @expose("/list")
     def list(self):
         res = AIModelParamsDAO.list()
-        return json.dumps(res)
+        return {'data':res}

@@ -72,7 +72,7 @@ class AIModelParamsDAO(BaseDAO):
         for field in field_list:
             field_object_list.append(getattr(AIModelParams, field))
         rows = db.session.query(*field_object_list).order_by(text('update_time desc')).all()
-        res = [ {'id': r.id, 'name': r.name} for r in rows ]
+        res = [ [r.id, r.name] for r in rows ]
         return res
 
 
