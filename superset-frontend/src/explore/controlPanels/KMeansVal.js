@@ -1,5 +1,18 @@
-import { t } from '@superset-ui/core';
+import { t, SupersetClient } from '@superset-ui/core';
 // import { sections } from '@superset-ui/chart-controls';
+
+const xx = ()=>{
+  let ret = {};
+  $.ajax({
+    url:"/api/v1/ai/list",
+    dataType: 'json',
+    async:false,
+    success:(data)=>{
+      ret = data;
+    }
+  });
+  return ret['data'];
+}
 
 export default {
   controlPanelSections: [
@@ -20,11 +33,11 @@ export default {
           config: {
             type: 'SelectControl',
             freeForm: true,
-            label: 'checkpoints',
+            label: 'checkpoint name',
             validators: [],
-            choices: [],
+            choices: xx(), //[[3, 'hello'], [4, 'hello2']],
             description: t('请选择合适的checkpoint!'),
-            default: 10
+            // default: 10
           },
         }],
       ],

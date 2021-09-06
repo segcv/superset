@@ -30,3 +30,4 @@ src/temp/*
 *.d.ts
 src/visualizations/KMeansVal/*
 src/visualizations/KMeansZhou/*
+src/explore/controlPanels/KMeansVal.js
