@@ -911,8 +911,7 @@ class KMeansValViz(BaseViz):
 
         # train
         from superset.ai.ai_model_param_dao import AIModelParamsDAO
-        rows = AIModelParamsDAO.list()
-        row = rows[0]
+        row = AIModelParamsDAO.get(9)
 
         # val
         idx, clusters = solver.test(x, checkpoint=row.checkpoint)

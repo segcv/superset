@@ -67,7 +67,22 @@ class AIModelParamsDAO(BaseDAO):
     @staticmethod
     def list() -> List[AIModelParams]:
         from sqlalchemy.sql import text
-        rows = db.session.query(AIModelParams).from_statement(text('select id,name,slice_id,checkpoint FROM ai_model_params ORDER BY update_time')).all()
-        return rows
+        field_list = ['id','name']
+        field_object_list = []
+        for field in field_list:
+            field_object_list.append(getattr(AIModelParams, field))
+        rows = db.session.query(*field_object_list).order_by(text('update_time desc')).all()
+        res = [ {'id': r.id, 'name': r.name} for r in rows ]
+        return res
 
+
+    @staticmethod
+    def get(id: int) -> List[AIModelParams]:
+        from sqlalchemy.sql import text
+        field_list = ['id','name', 'checkpoint']
+        field_object_list = []
+        for field in field_list:
+            field_object_list.append(getattr(AIModelParams, field))
+        row = db.session.query(*field_object_list).filter(text(f'id={id}')).order_by(text('update_time desc')).first()
+        return row
     
