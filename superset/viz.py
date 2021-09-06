@@ -900,6 +900,8 @@ class KMeansValViz(BaseViz):
 
     # 手肘法训练模型，并入ai_model_params库
     def val(self, df: pd.DataFrame):
+        ckp_id = int(self.form_data['checkpoint_info'])
+
         from scipy.spatial.distance import cdist
         from sklearn import preprocessing
         import pickle
@@ -911,10 +913,11 @@ class KMeansValViz(BaseViz):
 
         # train
         from superset.ai.ai_model_param_dao import AIModelParamsDAO
-        row = AIModelParamsDAO.get(9)
+        row = AIModelParamsDAO.get(ckp_id)
+        print(row.config)
 
         # val
-        idx, clusters = solver.test(x, checkpoint=row.checkpoint)
+        idx, clusters = solver.test(x, checkpoint=row.checkpoint, config=json.loads(row.config))
         return {
             'idx': idx,
             'clusters': clusters

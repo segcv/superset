@@ -79,7 +79,7 @@ class AIModelParamsDAO(BaseDAO):
     @staticmethod
     def get(id: int) -> List[AIModelParams]:
         from sqlalchemy.sql import text
-        field_list = ['id','name', 'checkpoint']
+        field_list = ['id','name', 'config', 'checkpoint']
         field_object_list = []
         for field in field_list:
             field_object_list.append(getattr(AIModelParams, field))

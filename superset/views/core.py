@@ -1032,7 +1032,8 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 # print(payload)
                 df = pd.DataFrame(payload['data']['df'])
                 checkpoint_name = form_data['checkpoint_name']
-                slice_id = form_data['slice_id'] if ('slice_id' in form_data)  else -1
+                num_clusters = int(form_data['num_clusters'])
+                config = json.dumps({'num_clusters': num_clusters})
 
                 from superset.ai_solver.KMeansSolver import KMeansSolver
                 from sklearn import preprocessing
@@ -1042,10 +1043,10 @@ class Superset(BaseSupersetView):  # pylint: disable=too-many-public-methods
                 min_max_scaler = preprocessing.MinMaxScaler()
                 x = min_max_scaler.fit_transform(df)
 
-                loss, classfier = solver.train(x)
+                loss, classfier = solver.train(x, config={'num_clusters': num_clusters})
                 modelParams = pickle.dumps(classfier)
 
-                row = AIModelParams(name=checkpoint_name, slice_id=slice_id, checkpoint=modelParams)
+                row = AIModelParams(name=checkpoint_name, config=config, checkpoint=modelParams)
                 AIModelParamsDAO.save(row)
             except SupersetException as ex:
                 return json_error_response(utils.error_msg_from_exception(ex))

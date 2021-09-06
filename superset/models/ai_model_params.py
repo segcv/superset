@@ -30,11 +30,11 @@ class AIModelParams(
     """AI Model Paramters store checkpoint of model"""
     __tablename__ = "ai_model_params"
 
-    list_columns = ['id', 'name', 'slice_id', 'checkpoint', 'create_time', 'update_time', 'is_delete']
+    list_columns = ['id', 'name', 'config', 'checkpoint', 'create_time', 'update_time', 'is_delete']
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250))
-    slice_id = Column(Integer)
+    config = Column(String(500))
     checkpoint = Column(BLOB)
     create_time = Column(String(50))
     update_time = Column(String(50))
